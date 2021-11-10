@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key, required this.title}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:weather_icons/weather_icons.dart';

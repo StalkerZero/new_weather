@@ -34,6 +34,8 @@ dependencies:
   flutter_swiper: ^1.1.6
   expandable_bottom_sheet: ^1.1.1+1
   weather_icons: ^3.0.0
+  flutter_neumorphic_null_safety: ^3.2.4
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:

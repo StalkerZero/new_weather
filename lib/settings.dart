@@ -1,17 +1,12 @@
 
 import 'main.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key, required this.title}) : super(key: key);
   final String title;
-
-  static int temp = 0;
-  static int wind = 0;
-  static int press = 0;
-  static bool theme = false;
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -64,10 +59,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     NeumorphicSwitch(
                       onChanged: (val){
                         setState(() {
-                          SettingsPage.theme = val;
+                          MyApp.prefs.setBool("theme", val);
                         });
                       },
-                      value: SettingsPage.theme,
+                      value: MyApp.prefs.getBool("theme") ?? false,
                     ),
                   ],
                 ),
@@ -83,274 +78,279 @@ class _SettingsPageState extends State<SettingsPage> {
                         fontWeight: FontWeight.w600)),
               ],
             ),
-            Container(
-              height: 160,
-              width: 360,
-              child: Neumorphic(
-                child: Column(
-                  children: [
-                    Column(
+            FutureBuilder(
+              future: MyApp.share(),
+              builder: (context, snapshot) {
+                return Container(
+                  height: 160,
+                  width: 360,
+                  child: Neumorphic(
+                    child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Температура',
-                                style: GoogleFonts.manrope(
-                                    color: Color(0xFF333333),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Температура',
+                                    style: GoogleFonts.manrope(
+                                        color: Color(0xFF333333),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
 
-                              ),
-                              SizedBox(
-                                width: 110,
-                                height: 27,
-                                child: NeumorphicToggle(
-                                  onChanged: (val){
-                                    setState(() {
-                                      SettingsPage.temp = val;
-                                    });
-                                  },
-                                  selectedIndex: SettingsPage.temp,
-                                  thumb: Container(
-                                    color: Color(0xFF4B5F88),
                                   ),
-                                  children: [
-                                    ToggleElement(
-                                      background: Center(
-                                        child: Text(
-                                          '°C',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                        ),
+                                  SizedBox(
+                                    width: 110,
+                                    height: 27,
+                                    child: NeumorphicToggle(
+                                      onChanged: (val){
+                                        setState(() {
+                                          MyApp.prefs.setInt("temp", val);
+                                        });
+                                      },
+                                      selectedIndex: MyApp.prefs.getInt("temp") ?? 0,
+                                      thumb: Container(
+                                        color: Color(0xFF4B5F88),
                                       ),
-                                      foreground: Center(
-                                        child: Text(
-                                          '°С',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
+                                      children: [
+                                        ToggleElement(
+                                          background: Center(
+                                            child: Text(
+                                              '°C',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          foreground: Center(
+                                            child: Text(
+                                              '°С',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ),
+                                        ToggleElement(
+                                          background: Center(
+                                            child: Text(
+                                              '°F',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          foreground: Center(
+                                            child: Text(
+                                              '°F',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                      style: NeumorphicToggleStyle(
+                                        backgroundColor: Colors.transparent,
+                                        lightSource: LightSource.bottom,
                                       ),
                                     ),
-                                    ToggleElement(
-                                      background: Center(
-                                        child: Text(
-                                          '°F',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      foreground: Center(
-                                        child: Text(
-                                          '°F',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  style: NeumorphicToggleStyle(
-                                    backgroundColor: Colors.transparent,
-                                    lightSource: LightSource.bottom,
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
-                          child: Divider(
-                            height: 1,
-                            color: Color(0xFFC6CEE3),
-                            thickness: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Сила ветра',
-                                style: GoogleFonts.manrope(
-                                    color: Color(0xFF333333),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
+                              child: Divider(
+                                height: 1,
+                                color: Color(0xFFC6CEE3),
+                                thickness: 1,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Сила ветра',
+                                    style: GoogleFonts.manrope(
+                                        color: Color(0xFF333333),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
 
-                              ),
-                              Container(
-                                width: 110,
-                                height: 27,
-                                child: NeumorphicToggle(
-                                  onChanged: (val){
-                                    setState(() {
-                                      SettingsPage.wind = val;
-                                    });
-                                  },
-                                  selectedIndex: SettingsPage.wind,
-                                  thumb: Container(
-                                    color: Color(0xFF4B5F88),
                                   ),
-                                  children: [
-                                    ToggleElement(
-                                      background: Center(
-                                        child: Text(
-                                          'м/с',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                        ),
+                                  Container(
+                                    width: 110,
+                                    height: 27,
+                                    child: NeumorphicToggle(
+                                      onChanged: (val){
+                                        setState(() {
+                                          MyApp.prefs.setInt("wind", val);
+                                        });
+                                      },
+                                      selectedIndex: MyApp.prefs.getInt("wind") ?? 0,
+                                      thumb: Container(
+                                        color: Color(0xFF4B5F88),
                                       ),
-                                      foreground: Center(
-                                        child: Text(
-                                          'м/с',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
+                                      children: [
+                                        ToggleElement(
+                                          background: Center(
+                                            child: Text(
+                                              'м/с',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          foreground: Center(
+                                            child: Text(
+                                              'м/с',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ),
+                                        ToggleElement(
+                                          background: Center(
+                                            child: Text(
+                                              'км/ч',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          foreground: Center(
+                                            child: Text(
+                                              'км/ч',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                      style: NeumorphicToggleStyle(
+                                        backgroundColor: Colors.transparent,
+                                        lightSource: LightSource.bottom,
                                       ),
                                     ),
-                                    ToggleElement(
-                                      background: Center(
-                                        child: Text(
-                                          'км/ч',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      foreground: Center(
-                                        child: Text(
-                                          'км/ч',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  style: NeumorphicToggleStyle(
-                                    backgroundColor: Colors.transparent,
-                                    lightSource: LightSource.bottom,
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
-                          child: Divider(
-                            height: 1,
-                            color: Color(0xFFC6CEE3),
-                            thickness: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Давление',
-                                style: GoogleFonts.manrope(
-                                    color: Color(0xFF333333),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
+                              child: Divider(
+                                height: 1,
+                                color: Color(0xFFC6CEE3),
+                                thickness: 1,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Давление',
+                                    style: GoogleFonts.manrope(
+                                        color: Color(0xFF333333),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
 
-                              ),
-                              Container(
-                                width: 170,
-                                height: 27,
-                                child: NeumorphicToggle(
-                                  onChanged: (val){
-                                    setState(() {
-                                      SettingsPage.press = val;
-                                    });
-                                  },
-                                  selectedIndex: SettingsPage.press,
-                                  thumb: Container(
-                                    color: Color(0xFF4B5F88),
                                   ),
-                                  children: [
-                                    ToggleElement(
-                                      background: const Center(
-                                        child: Text(
-                                          'мм.рт.ст',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                        ),
+                                  Container(
+                                    width: 170,
+                                    height: 27,
+                                    child: NeumorphicToggle(
+                                      onChanged: (val){
+                                        setState(() {
+                                          MyApp.prefs.setInt("press", val);
+                                        });
+                                      },
+                                      selectedIndex: MyApp.prefs.getInt("press") ?? 0,
+                                      thumb: Container(
+                                        color: Color(0xFF4B5F88),
                                       ),
-                                      foreground: const Center(
-                                        child: Text(
-                                          'мм.рт.ст',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
+                                      children: [
+                                        ToggleElement(
+                                          background: const Center(
+                                            child: Text(
+                                              'мм.рт.ст',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          foreground: const Center(
+                                            child: Text(
+                                              'мм.рт.ст',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ),
+                                        ToggleElement(
+                                          background: const Center(
+                                            child: Text(
+                                              'гПа',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          foreground: Center(
+                                            child: Text(
+                                              'гПа',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                      style: NeumorphicToggleStyle(
+                                        backgroundColor: Colors.transparent,
+                                        lightSource: LightSource.bottom,
                                       ),
                                     ),
-                                    ToggleElement(
-                                      background: const Center(
-                                        child: Text(
-                                          'гПа',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      foreground: Center(
-                                        child: Text(
-                                          'гПа',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                  style: NeumorphicToggleStyle(
-                                    backgroundColor: Colors.transparent,
-                                    lightSource: LightSource.bottom,
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+
                       ],
                     ),
-
-                  ],
-                ),
-                style: NeumorphicStyle(
-                  color: Color(0xFFE2EBFF),
-                  depth: 3,
-                  lightSource: LightSource.top,
-                  boxShape: NeumorphicBoxShape.roundRect(
-                      BorderRadius.all(Radius.circular(30))),
-                ),
-              ),
+                    style: NeumorphicStyle(
+                      color: Color(0xFFE2EBFF),
+                      depth: 3,
+                      lightSource: LightSource.top,
+                      boxShape: NeumorphicBoxShape.roundRect(
+                          BorderRadius.all(Radius.circular(30))),
+                    ),
+                  ),
+                );
+              },
             ),
           ])),
     ),

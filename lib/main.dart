@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'develop.dart';
@@ -11,11 +12,19 @@ import 'settings.dart';
 import 'search.dart';
 
 void main() {
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+
+  static late SharedPreferences prefs;
+
+  static share() async {
+    return prefs = await SharedPreferences.getInstance();
+  }
 
   // This widget is the root of your application.
   @override
@@ -61,22 +70,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String temp(){
-    if(SettingsPage.temp == 0)return '10°C';
+    if(MyApp.prefs.getInt("temp") !=1 )return '10°C';
     return '50°F';
   }
 
   String wind(){
-    if(SettingsPage.wind == 0)return '  10м/с';
+    if(MyApp.prefs.getInt("wind") !=1 )return '  10м/с';
     return '  36км/ч';
   }
 
   String press(){
-    if(SettingsPage.press == 0)return '761мм.рт.ст';
+    if(MyApp.prefs.getInt("press") !=1 )return '761мм.рт.ст';
     return '1015гПа';
   }
 
   String theme(){
-    if(SettingsPage.theme)return 'assets/DarkTheme.png';
+    if(MyApp.prefs.getBool("theme") == null) return 'assets/LightTheme.png';
+    if(MyApp.prefs.getBool("theme")!)return 'assets/DarkTheme.png';
     return 'assets/LightTheme.png';
   }
 
@@ -146,7 +156,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     ),
-    body: Builder(builder: (context) {
+    body: FutureBuilder(
+        future: MyApp.share(),
+        builder: (context, snapshot) {
       return ExpandableBottomSheet(
         background: Container(
               decoration: BoxDecoration(
