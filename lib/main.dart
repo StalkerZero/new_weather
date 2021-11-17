@@ -45,7 +45,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _done = false;
 
   Icon weather(){
     switch(MyHomePage.weather) {
@@ -60,27 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         return Icon(WeatherIcons.alien);
     }
-  }
-
-  String temp(){
-    if(data.prefs.getInt("temp") !=1 )return '10°C';
-    return '50°F';
-  }
-
-  String wind(){
-    if(data.prefs.getInt("wind") !=1 )return '  10м/с';
-    return '  36км/ч';
-  }
-
-  String press(){
-    if(data.prefs.getInt("press") !=1 )return '761мм.рт.ст';
-    return '1015гПа';
-  }
-
-  String theme(){
-    if(data.prefs.getBool("theme") == null) return 'assets/LightTheme.png';
-    if(data.prefs.getBool("theme")!)return 'assets/DarkTheme.png';
-    return 'assets/LightTheme.png';
   }
 
   @override
@@ -151,13 +129,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ),
     body: FutureBuilder(
-        future: data.share(),
+        future: data.start(),
         builder: (context, snapshot) {
       return ExpandableBottomSheet(
         background: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(theme()),
+                  image: AssetImage(data.theme()),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -185,9 +163,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Colors.white,
                               fontWeight: FontWeight.w600)),
                       NeumorphicButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                        onPressed: ()async{
+                          await Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => SearchPage(title: 'Search')));
+                          setState(() {});
                         },
                         padding: EdgeInsets.only(top: 0),
                         child: NeumorphicIcon(
@@ -207,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ]),
                 Text(
-                    _done ? '' : '${temp()}',
+                    data.temp(),
                     style: GoogleFonts.manrope(
                         fontSize: 80,
                         color: Colors.white,
@@ -215,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         letterSpacing: -5)
                 ),
                 Text(
-                  '23 сент. 2021',
+                  data.date(),
                   style: GoogleFonts.manrope(
                     fontSize: 20,
                     color: Colors.white,
@@ -278,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    temp(),
+                                    data.temp(),
                                     style: GoogleFonts.manrope(
                                       fontSize: 17,
                                       color: Colors.black,
@@ -314,7 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    temp(),
+                                    data.temp(),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -350,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    temp(),
+                                    data.temp(),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -386,7 +365,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    temp(),
+                                    data.temp(),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -418,7 +397,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: [
                                   Icon(WeatherIcons.thermometer, size: 26,),
                                   Text(
-                                    temp(),
+                                    data.temp(),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -442,7 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 children: [
                                   Icon(WeatherIcons.humidity, size: 26,),
                                   Text(
-                                    '90%',
+                                    data.prefs.getStringList("current")![2]+'%',
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -474,7 +453,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               Icon(WeatherIcons.strong_wind, size: 26,),
                               Text(
-                                wind(),
+                                data.wind(),
                                 style: GoogleFonts.manrope(
                                     fontSize: 17,
                                     color: Colors.black,
@@ -498,7 +477,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               Icon(WeatherIcons.barometer, size: 26,),
                               Text(
-                                press(),
+                                data.press(),
                                 style: GoogleFonts.manrope(
                                     fontSize: 17,
                                     color: Colors.black,

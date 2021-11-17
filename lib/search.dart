@@ -62,6 +62,7 @@ class _FavoritesPageState extends State<SearchPage> {
                           onPressed: () {
                               data.addCity(e);
                               data.res.clear();
+                              data.currentWeather();
                               Navigator.pop(context);
                             },
                           style: ButtonStyle(),

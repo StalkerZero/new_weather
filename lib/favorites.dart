@@ -47,6 +47,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   children: data.prefs.getStringList('favorites')!.map((e) => TextButton(
                       onPressed: () {
                         data.prefs.setString('city', e);
+                        data.currentWeather();
                         Navigator.pop(context);
                       },
                       style: ButtonStyle(),

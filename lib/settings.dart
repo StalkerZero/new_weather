@@ -78,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             FutureBuilder(
-              future: data.share(),
+              future: data.start(),
               builder: (context, snapshot) {
                 return Container(
                   height: 160,
@@ -288,7 +288,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ToggleElement(
                                           background: const Center(
                                             child: Text(
-                                              'мм.рт.ст',
+                                              'гПа',
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
@@ -297,7 +297,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                           ),
                                           foreground: const Center(
                                             child: Text(
-                                              'мм.рт.ст',
+                                              'гПа',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 18,
@@ -308,7 +308,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ToggleElement(
                                           background: const Center(
                                             child: Text(
-                                              'гПа',
+                                              'мм.рт.ст',
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 18,
@@ -317,7 +317,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                           ),
                                           foreground: Center(
                                             child: Text(
-                                              'гПа',
+                                              'мм.рт.ст',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 18,
