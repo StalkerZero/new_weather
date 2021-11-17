@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:weather_icons/weather_icons.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'data.dart';
 import 'develop.dart';
 import 'favorites.dart';
@@ -44,7 +45,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _temperature = 12;
   bool _done = false;
 
   Icon weather(){
@@ -124,9 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Text('Избранное', style: GoogleFonts.didactGothic(fontSize: 23)),
               ]),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => FavoritesPage(title: 'Favorites')));
+                setState(() {});
               },
             ),
             ListTile(
@@ -178,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           boxShape: NeumorphicBoxShape.circle(),
                         ),
                       ),
-                      Text("Санкт-Петербург",
+                      Text(data.prefs.getString('city')!,
                           style: GoogleFonts.manrope(
                               fontSize: 16,
                               color: Colors.white,

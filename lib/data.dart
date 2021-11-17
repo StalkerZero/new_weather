@@ -9,7 +9,8 @@ class data{
   static late SharedPreferences prefs;
 
   static share() async {
-    return prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
+    if(prefs.getString('city')==null) prefs.setString('city', "Санкт Петербург,RU");
   }
 
   static addCity(String city) async {
@@ -17,11 +18,13 @@ class data{
     // print(resp.body.toString());
     if(jsonDecode(resp.body)['cod']==200){
       prefs.setString('city', city);
-      List<String> list = [];
-      if(prefs.getStringList('favorites')!=null) list = prefs.getStringList('favorites')!;
+      Set<String> list = new Set();
+      if(prefs.getStringList('favorites')!=null) list = prefs.getStringList('favorites')!.toSet();
       list.add(city);
-      prefs.setStringList('favorites', list);
+      prefs.setStringList('favorites', list.toList());
       print("Success");
     }
   }
+
+
 }

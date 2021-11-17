@@ -33,7 +33,10 @@ class _FavoritesPageState extends State<SearchPage> {
                 Row(
                   children: [
                     IconButton(
-                        onPressed: () {Navigator.pop(context);},
+                        onPressed: () {
+                          data.res.clear();
+                          Navigator.pop(context);
+                          },
                         icon: Icon(Icons.arrow_back_ios_outlined),
                         iconSize: 20,
                         color: Colors.black),
@@ -58,6 +61,7 @@ class _FavoritesPageState extends State<SearchPage> {
                       children: data.res.map((e) => TextButton(
                           onPressed: () {
                               data.addCity(e);
+                              data.res.clear();
                               Navigator.pop(context);
                             },
                           style: ButtonStyle(),

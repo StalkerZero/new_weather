@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'data.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 
@@ -37,6 +37,27 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         color: Colors.black,
                         fontWeight: FontWeight.w600)),
               ],
+            ),
+            Container(
+              height: 500,
+              child: Visibility(
+                visible: data.prefs.getStringList('favorites')!=null,
+                child: ListView(
+                  // itemExtent: 5,
+                  children: data.prefs.getStringList('favorites')!.map((e) => TextButton(
+                      onPressed: () {
+                        data.prefs.setString('city', e);
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(),
+                      child:
+                      Text(
+                          e,
+                          style: GoogleFonts.manrope(fontSize: 16)
+                      )
+                  )).toList(),
+                ),
+              ),
             ),
           ],
         ),
