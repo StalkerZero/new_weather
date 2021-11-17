@@ -245,7 +245,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    '06:00',
+                                    data.time(1),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -257,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.temp(),
+                                    data.hourlyTemp(1),
                                     style: GoogleFonts.manrope(
                                       fontSize: 17,
                                       color: Colors.black,
@@ -281,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    '06:00',
+                                    data.time(2),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -293,7 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.temp(),
+                                    data.hourlyTemp(2),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -317,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    '06:00',
+                                    data.time(3),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -329,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.temp(),
+                                    data.hourlyTemp(3),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -353,7 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    '06:00',
+                                    data.time(4),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,
@@ -365,7 +365,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.temp(),
+                                    data.hourlyTemp(4),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
                                         color: Colors.black,

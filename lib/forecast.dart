@@ -42,7 +42,7 @@ class _ForecastPage extends State<ForecastPage> {
                       child: Swiper(
                           itemHeight: 387,
                           itemWidth: 320,
-                          itemCount: 7,
+                          itemCount: 5,
                           layout: SwiperLayout.STACK,
                           loop: false,
                           itemBuilder: (BuildContext context, index) {
