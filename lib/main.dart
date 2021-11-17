@@ -5,6 +5,7 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'data.dart';
 import 'develop.dart';
 import 'favorites.dart';
 import 'forecast.dart';
@@ -12,19 +13,11 @@ import 'settings.dart';
 import 'search.dart';
 
 void main() {
-
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-
-  static late SharedPreferences prefs;
-
-  static share() async {
-    return prefs = await SharedPreferences.getInstance();
-  }
 
   // This widget is the root of your application.
   @override
@@ -70,23 +63,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   String temp(){
-    if(MyApp.prefs.getInt("temp") !=1 )return '10°C';
+    if(data.prefs.getInt("temp") !=1 )return '10°C';
     return '50°F';
   }
 
   String wind(){
-    if(MyApp.prefs.getInt("wind") !=1 )return '  10м/с';
+    if(data.prefs.getInt("wind") !=1 )return '  10м/с';
     return '  36км/ч';
   }
 
   String press(){
-    if(MyApp.prefs.getInt("press") !=1 )return '761мм.рт.ст';
+    if(data.prefs.getInt("press") !=1 )return '761мм.рт.ст';
     return '1015гПа';
   }
 
   String theme(){
-    if(MyApp.prefs.getBool("theme") == null) return 'assets/LightTheme.png';
-    if(MyApp.prefs.getBool("theme")!)return 'assets/DarkTheme.png';
+    if(data.prefs.getBool("theme") == null) return 'assets/LightTheme.png';
+    if(data.prefs.getBool("theme")!)return 'assets/DarkTheme.png';
     return 'assets/LightTheme.png';
   }
 
@@ -119,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () async {
                 await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => SettingsPage(title: 'title')));
+                    builder: (_) => SettingsPage(title: 'Settings')));
                 setState(() {});
               },
             ),
@@ -133,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ]),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => FavoritesPage(title: 'title')));
+                    builder: (_) => FavoritesPage(title: 'Favorites')));
               },
             ),
             ListTile(
@@ -149,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => DeveloperPage(title: 'title')));
+                    builder: (_) => DeveloperPage(title: 'About')));
               },
             ),
           ],
@@ -157,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     ),
     body: FutureBuilder(
-        future: MyApp.share(),
+        future: data.share(),
         builder: (context, snapshot) {
       return ExpandableBottomSheet(
         background: Container(
@@ -168,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               child: Column(children: [
-                const Padding(padding: EdgeInsets.only(top: 30)),
+                const Padding(padding: EdgeInsets.only(top: 40)),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -193,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       NeumorphicButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => SearchPage(title: 'title')));
+                              builder: (_) => SearchPage(title: 'Search')));
                         },
                         padding: EdgeInsets.only(top: 0),
                         child: NeumorphicIcon(
@@ -212,29 +205,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(_done ? '' : '${_temperature.round()}°c',
-                        style: GoogleFonts.manrope(
-                            fontSize: 80,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: -5)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '23 сент. 2021',
-                      style: GoogleFonts.manrope(
-                        fontSize: 20,
+                Text(
+                    _done ? '' : '${temp()}',
+                    style: GoogleFonts.manrope(
+                        fontSize: 80,
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                        letterSpacing: -5)
+                ),
+                Text(
+                  '23 сент. 2021',
+                  style: GoogleFonts.manrope(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ])
         ),

@@ -1,7 +1,6 @@
 
-import 'main.dart';
+import 'data.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -59,10 +58,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     NeumorphicSwitch(
                       onChanged: (val){
                         setState(() {
-                          MyApp.prefs.setBool("theme", val);
+                          data.prefs.setBool("theme", val);
                         });
                       },
-                      value: MyApp.prefs.getBool("theme") ?? false,
+                      value: data.prefs.getBool("theme") ?? false,
                     ),
                   ],
                 ),
@@ -79,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             FutureBuilder(
-              future: MyApp.share(),
+              future: data.share(),
               builder: (context, snapshot) {
                 return Container(
                   height: 160,
@@ -108,10 +107,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                     child: NeumorphicToggle(
                                       onChanged: (val){
                                         setState(() {
-                                          MyApp.prefs.setInt("temp", val);
+                                          data.prefs.setInt("temp", val);
                                         });
                                       },
-                                      selectedIndex: MyApp.prefs.getInt("temp") ?? 0,
+                                      selectedIndex: data.prefs.getInt("temp") ?? 0,
                                       thumb: Container(
                                         color: Color(0xFF4B5F88),
                                       ),
@@ -193,10 +192,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                     child: NeumorphicToggle(
                                       onChanged: (val){
                                         setState(() {
-                                          MyApp.prefs.setInt("wind", val);
+                                          data.prefs.setInt("wind", val);
                                         });
                                       },
-                                      selectedIndex: MyApp.prefs.getInt("wind") ?? 0,
+                                      selectedIndex: data.prefs.getInt("wind") ?? 0,
                                       thumb: Container(
                                         color: Color(0xFF4B5F88),
                                       ),
@@ -278,10 +277,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                     child: NeumorphicToggle(
                                       onChanged: (val){
                                         setState(() {
-                                          MyApp.prefs.setInt("press", val);
+                                          data.prefs.setInt("press", val);
                                         });
                                       },
-                                      selectedIndex: MyApp.prefs.getInt("press") ?? 0,
+                                      selectedIndex: data.prefs.getInt("press") ?? 0,
                                       thumb: Container(
                                         color: Color(0xFF4B5F88),
                                       ),
