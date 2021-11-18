@@ -3,7 +3,7 @@ import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'main.dart';
+import 'data.dart';
 
 class ForecastPage extends StatefulWidget {
   const ForecastPage({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _ForecastPage extends State<ForecastPage> {
                       child: Swiper(
                           itemHeight: 387,
                           itemWidth: 320,
-                          itemCount: 5,
+                          itemCount: 7,
                           layout: SwiperLayout.STACK,
                           loop: false,
                           itemBuilder: (BuildContext context, index) {
@@ -60,7 +60,7 @@ class _ForecastPage extends State<ForecastPage> {
                                   children: [
                                     ListTile(
                                       title: Text(
-                                        "23 сентября",
+                                        (23+index).toString()+" сентября", //TODO: Сделать реальную дату
                                         style: GoogleFonts.manrope(
                                             fontSize: 24,
                                             fontWeight: FontWeight.w600),
@@ -72,10 +72,10 @@ class _ForecastPage extends State<ForecastPage> {
                                       leading: Icon(WeatherIcons.rain, size: 60)
                                     ),
                                     ListTile(
-                                      leading: Icon(Icons.thermostat_rounded),
+                                      leading: Icon(WeatherIcons.thermometer, size: 26,),
                                       title: Align(
                                         child: Text(
-                                          "8°c",
+                                          data.temp("daily", index),
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
@@ -84,10 +84,10 @@ class _ForecastPage extends State<ForecastPage> {
                                       ),
                                     ),
                                     ListTile(
-                                      leading: Icon(Icons.water_outlined),
+                                      leading: Icon(WeatherIcons.strong_wind, size: 26,),
                                       title: Align(
                                         child: Text(
-                                          "9 м/с",
+                                          data.wind("daily", index),
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
@@ -96,11 +96,10 @@ class _ForecastPage extends State<ForecastPage> {
                                       ),
                                     ),
                                     ListTile(
-                                      leading:
-                                          Icon(Icons.invert_colors_on_rounded),
+                                      leading:Icon(WeatherIcons.humidity, size: 26,),
                                       title: Align(
                                         child: Text(
-                                          "87%",
+                                          data.prefs.getStringList("daily")![index].split(';')[2]+'%',
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
@@ -109,10 +108,10 @@ class _ForecastPage extends State<ForecastPage> {
                                       ),
                                     ),
                                     ListTile(
-                                      leading: Icon(Icons.explore_outlined),
+                                      leading: Icon(WeatherIcons.barometer, size: 26,),
                                       title: Align(
                                         child: Text(
-                                          "761 мм.рт.ст.",
+                                          data.press("daily", index),
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),

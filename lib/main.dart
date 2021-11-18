@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Погода',
       theme: ThemeData(
-        canvasColor: Color(0xFFE2EBFF),
+        canvasColor: data.prefs.getBool("theme")! ? Color(0xFF0C162B) : Color(0xFFE2EBFF),
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
@@ -49,15 +49,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Icon weather(){
     switch(MyHomePage.weather) {
       case 1:
-        return Icon(WeatherIcons.day_sunny);
+        return Icon(WeatherIcons.day_sunny, color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,);
       case 2:
-        return Icon(WeatherIcons.rain);
+        return Icon(WeatherIcons.rain, color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,);
       case 3:
-        return Icon(WeatherIcons.cloud);
+        return Icon(WeatherIcons.cloud, color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,);
       case 4:
-        return Icon(WeatherIcons.day_snow);
+        return Icon(WeatherIcons.day_snow, color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,);
       default:
-        return Icon(WeatherIcons.alien);
+        return Icon(WeatherIcons.alien, color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,);
     }
   }
 
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Scaffold.of(context).openDrawer();
                           },
                         padding: EdgeInsets.only(top: 0),
-                        child: Icon(Icons.menu, size: 45, color: Colors.white),
+                        child: Icon(Icons.menu, size: 45, color: Color(0xFFD0D0D0)),
                         style: NeumorphicStyle(
                           depth: 3,
                           color: Colors.transparent,
@@ -157,10 +157,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           boxShape: NeumorphicBoxShape.circle(),
                         ),
                       ),
-                      Text(data.prefs.getString('city')!,
+                      Text(data.prefs.getString('city')!.split(";")[0],
                           style: GoogleFonts.manrope(
                               fontSize: 16,
-                              color: Colors.white,
+                              color: Color(0xFFD0D0D0),
                               fontWeight: FontWeight.w600)),
                       NeumorphicButton(
                         onPressed: ()async{
@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           size: 45,
                           style: NeumorphicStyle(
                             depth: 10,
-                            color: Colors.white,
+                            color: Color(0xFFD0D0D0),
                           ),
                         ),
                         style: NeumorphicStyle(
@@ -186,10 +186,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ]),
                 Text(
-                    data.temp(),
+                    data.temp("current", 0),
                     style: GoogleFonts.manrope(
                         fontSize: 80,
-                        color: Colors.white,
+                        color: Color(0xFFD0D0D0),
                         fontWeight: FontWeight.w600,
                         letterSpacing: -5)
                 ),
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   data.date(),
                   style: GoogleFonts.manrope(
                     fontSize: 20,
-                    color: Colors.white,
+                    color: Color(0xFFD0D0D0),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -206,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
         persistentHeader: Container(
             height: 40,
             width: 1000,
-            color: Color(0xFFE2EBFF),
+            color: data.prefs.getBool("theme")! ? Color(0xFF0C162B) : Color(0xFFE2EBFF),
             child: Center(
               child: Container(
                 height: 6,
@@ -222,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
         expandableContent:
           Container(
             height: 380,
-            color: Color(0xFFE2EBFF),
+            color: data.prefs.getBool("theme")! ? Color(0xFF0C162B) : Color(0xFFE2EBFF),
             child:
               Column(
                 children: [
@@ -233,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: [
                           Neumorphic(
                             style: NeumorphicStyle(
-                              color: Color(0xFFE2EBFF),
+                              color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                               depth: 3,
                               lightSource: LightSource.top,
                             ),
@@ -248,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     data.time(1),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                   Container(
@@ -257,10 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.hourlyTemp(1),
+                                    data.temp("hourly", 1),
                                     style: GoogleFonts.manrope(
                                       fontSize: 17,
-                                      color: Colors.black,
+                                      color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                       fontWeight: FontWeight.w400),
                                   ),
                                 ],
@@ -269,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Neumorphic(
                             style: NeumorphicStyle(
-                              color: Color(0xFFE2EBFF),
+                              color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                               depth: 3,
                               lightSource: LightSource.top,
                             ),
@@ -284,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     data.time(2),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                   Container(
@@ -293,10 +293,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.hourlyTemp(2),
+                                    data.temp("hourly", 2),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                 ],
@@ -305,7 +305,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Neumorphic(
                             style: NeumorphicStyle(
-                              color: Color(0xFFE2EBFF),
+                              color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                               depth: 3,
                               lightSource: LightSource.top,
                             ),
@@ -320,7 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     data.time(3),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                   Container(
@@ -329,10 +329,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.hourlyTemp(3),
+                                    data.temp("hourly", 3),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                 ],
@@ -341,7 +341,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Neumorphic(
                             style: NeumorphicStyle(
-                              color: Color(0xFFE2EBFF),
+                              color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                               depth: 3,
                               lightSource: LightSource.top,
                             ),
@@ -356,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     data.time(4),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                   Container(
@@ -365,10 +365,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: weather(),
                                   ),
                                   Text(
-                                    data.hourlyTemp(4),
+                                    data.temp("hourly", 4),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.w400),
                                   ),
                                 ],
@@ -388,19 +388,23 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 90,
                             child:Neumorphic(
                               style: NeumorphicStyle(
-                                color: Color(0xFFE2EBFF),
+                                color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                                 depth: 10,
                                 lightSource: LightSource.top,
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(WeatherIcons.thermometer, size: 26,),
+                                  Icon(
+                                    WeatherIcons.thermometer,
+                                    size: 26,
+                                    color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
+                                  ),
                                   Text(
-                                    data.temp(),
+                                    data.temp("current", 0),
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -412,19 +416,23 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 90,
                             child:Neumorphic(
                               style: NeumorphicStyle(
-                                color: Color(0xFFE2EBFF),
+                                color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                                 depth: 10,
                                 lightSource: LightSource.top,
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(WeatherIcons.humidity, size: 26,),
+                                  Icon(
+                                    WeatherIcons.humidity,
+                                    size: 26,
+                                    color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
+                                  ),
                                   Text(
                                     data.prefs.getStringList("current")![2]+'%',
                                     style: GoogleFonts.manrope(
                                         fontSize: 17,
-                                        color: Colors.black,
+                                        color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -444,19 +452,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 90,
                         child:Neumorphic(
                           style: NeumorphicStyle(
-                            color: Color(0xFFE2EBFF),
+                            color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                             depth: 10,
                             lightSource: LightSource.top,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(WeatherIcons.strong_wind, size: 26,),
+                              Icon(
+                                WeatherIcons.strong_wind,
+                                size: 26,
+                                color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
+                              ),
                               Text(
-                                data.wind(),
+                                data.wind("current", 3),
                                 style: GoogleFonts.manrope(
                                     fontSize: 17,
-                                    color: Colors.black,
+                                    color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -468,19 +480,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 90,
                         child:Neumorphic(
                           style: NeumorphicStyle(
-                            color: Color(0xFFE2EBFF),
+                            color: data.prefs.getBool("theme")! ? Color(0xFF0D182C) : Color(0xFFE2EBFF),
                             depth: 10,
                             lightSource: LightSource.top,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(WeatherIcons.barometer, size: 26,),
+                              Icon(
+                                WeatherIcons.barometer,
+                                size: 26,
+                                color: data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
+                              ),
                               Text(
-                                data.press(),
+                                data.press("current", 1),
                                 style: GoogleFonts.manrope(
                                     fontSize: 17,
-                                    color: Colors.black,
+                                    color: data.prefs.getBool("theme")! ? Color(0xFFD0D0D0) : Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -518,10 +534,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
       );
-        // borderRadius: const BorderRadius.only(
-        //   topLeft: Radius.circular(30),
-        //   topRight: Radius.circular(30),
-        // ),
     }),
   );
 }

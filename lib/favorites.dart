@@ -45,15 +45,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 child: ListView(
                   // itemExtent: 5,
                   children: data.prefs.getStringList('favorites')!.map((e) => TextButton(
-                      onPressed: () {
+                      onPressed: ()async{
                         data.prefs.setString('city', e);
-                        data.currentWeather();
+                        await data.oneCall();
                         Navigator.pop(context);
                       },
                       style: ButtonStyle(),
                       child:
                       Text(
-                          e,
+                          e.split(";")[0],
                           style: GoogleFonts.manrope(fontSize: 16)
                       )
                   )).toList(),

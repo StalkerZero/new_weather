@@ -18,8 +18,9 @@ search(Client client, String text) async{
   final resp = await client.get(Uri.parse('http://api.geonames.org/searchJSON?name_startsWith=$text&maxRows=10&orderby=relevance&username=stalkernidus'));
   // log(resp.body.toString());
   final respFromJson = jsonDecode(resp.body)['geonames'];
-  data.res.clear();
-  for(int i=0; i<10; i++) data.res.add(respFromJson[i]['name'].toString()+","+respFromJson[i]['countryCode'].toString());
+  // await data.start();
+  data.cities.clear();
+  for(int i=0; i<10; i++) data.cities.add(respFromJson[i]['name'].toString()+","+respFromJson[i]['countryCode'].toString());
   // data.res.forEach((e) {print(e+"\n");});
 }
 
@@ -34,7 +35,7 @@ class _FavoritesPageState extends State<SearchPage> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          data.res.clear();
+                          data.cities.clear();
                           Navigator.pop(context);
                           },
                         icon: Icon(Icons.arrow_back_ios_outlined),
@@ -55,14 +56,14 @@ class _FavoritesPageState extends State<SearchPage> {
                 Container(
                   height: 300,
                   child: Visibility(
-                    visible: data.res.length>0,
+                    visible: data.cities.length>0,
                     child: ListView(
                       // itemExtent: 5,
-                      children: data.res.map((e) => TextButton(
-                          onPressed: () {
-                              data.addCity(e);
-                              data.res.clear();
-                              data.currentWeather();
+                      children: data.cities.map((e) => TextButton(
+                          onPressed: ()async{
+                              await data.addCity(e);
+                              data.cities.clear();
+                              await data.oneCall();
                               Navigator.pop(context);
                             },
                           style: ButtonStyle(),
