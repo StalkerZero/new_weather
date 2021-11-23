@@ -57,9 +57,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     NeumorphicSwitch(
                       onChanged: (val){
-                        setState(() {
-                          data.prefs.setBool("theme", val);
-                        });
+                        data.prefs.setBool("theme", val);
+                        // context.widget.
+                        setState(() {});
                       },
                       value: data.prefs.getBool("theme") ?? false,
                     ),

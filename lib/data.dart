@@ -15,6 +15,7 @@ class data{
     if(prefs.getInt("temp")==null)prefs.setInt('temp', 0);
     if(prefs.getInt("wind")==null)prefs.setInt('wind', 0);
     if(prefs.getInt("press")==null)prefs.setInt('press', 0);
+    if(prefs.getBool("theme")==null)prefs.setBool('theme', false);
 
     oneCall();
     return;
