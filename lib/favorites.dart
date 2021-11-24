@@ -16,7 +16,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) => Scaffold(
     body: SafeArea(
       child: Container(
-        color: Color(0xFFE2EBFF),
         child: Column(
           children: [
             Row(
@@ -27,14 +26,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     },
                     icon: Icon(Icons.arrow_back_ios_new),
                     iconSize: 28,
-                    color: Colors.black),
+                    color: Theme.of(context).accentColor,),
                 SizedBox(
                   width: 18,
                 ),
                 Text('Избранные',
                     style: GoogleFonts.didactGothic(
                         fontSize: 30,
-                        color: Colors.black,
+                        color: Theme.of(context).accentColor,
                         fontWeight: FontWeight.w600)),
               ],
             ),
@@ -54,7 +53,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       child:
                       Text(
                           e.split(";")[0],
-                          style: GoogleFonts.manrope(fontSize: 16)
+                          style: GoogleFonts.manrope(fontSize: 16, color: Theme.of(context).accentColor,)
                       )
                   )).toList(),
                 ),

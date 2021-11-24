@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'package:weather_icons/weather_icons.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
@@ -20,40 +22,30 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  theme() {
-    if (data.prefs.getBool('theme')!)
-      return ThemeMode.dark;
-    else
-      return ThemeMode.light;
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return
-      FutureBuilder(
-      future: data.start(),
-      builder: (context, snapshot) {
-        return MaterialApp(
+  Widget build(BuildContext context) => FutureBuilder(
+        future: data.start(),
+        builder: (context, snapshot) => GetMaterialApp(
           title: 'Погода',
-          themeMode: theme(),
+          themeMode: data().theme,
           theme: ThemeData(
-            primaryColor: Colors.yellowAccent,
+            brightness: Brightness.light,
             canvasColor: Color(0xFFE2EBFF),
             accentColor: Color(0xFF0C162B),
+            cardColor: Color(0xFFE2EBFF),
             primarySwatch: Colors.blue,
           ),
           darkTheme: ThemeData(
-            primaryColor: Colors.yellowAccent,
+            brightness: Brightness.dark,
             canvasColor: Color(0xFF0C162B),
-            accentColor: Color(0xFFE2EBFF),
+            accentColor: Color(0xFFD0D0D0),
+            cardColor: Color(0xFF0D182C),
             primarySwatch: Colors.blue,
           ),
           debugShowCheckedModeBanner: false,
-          home: MyHomePage(title: 'Home Page Light'),
-        );
-      },
-    );
-  }
+          home: MyHomePage(title: 'Home Page'),
+        ),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -104,23 +96,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         drawer: Container(
-          width: 223,
+          width: 222,
           child: Drawer(
             child: ListView(
               children: [
-                ListTile(
-                  title: Row(
-                    children: [
-                      Text(
-                          'Weather app',
-                          style: GoogleFonts.dancingScript(
+                Row(
+                  children: [
+                    Text('Weather app',
+                        style: GoogleFonts.dancingScript(
                             fontSize: 35,
-                            fontWeight: FontWeight.w800,
-                            color:  Theme.of(context).accentColor
-                          )
-                      ),
-                    ],
-                  ),
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.w800,)),
+                  ],
                 ),
                 ListTile(
                   title: Row(
@@ -129,10 +116,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       const SizedBox(
                         width: 18,
                       ),
-                      Text(
-                          'Настройки',
-                          style: GoogleFonts.didactGothic(fontSize: 23, color: Theme.of(context).accentColor)
-                      ),
+                      Text('Настройки',
+                          style: GoogleFonts.didactGothic(
+                            fontSize: 23,
+                            color: Theme.of(context).accentColor,)),
                     ],
                   ),
                   onTap: () async {
@@ -147,10 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(
                       width: 18,
                     ),
-                    Text(
-                        'Избранное',
-                        style: GoogleFonts.didactGothic(fontSize: 23, color: Theme.of(context).accentColor)
-                    ),
+                    Text('Избранное',
+                        style: GoogleFonts.didactGothic(
+                          fontSize: 23,
+                          color: Theme.of(context).accentColor,)),
                   ]),
                   onTap: () async {
                     await Navigator.of(context).push(MaterialPageRoute(
@@ -165,10 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       const SizedBox(
                         width: 18,
                       ),
-                      Text(
-                          'О приложении',
-                          style: GoogleFonts.didactGothic(fontSize: 23, color: Theme.of(context).accentColor)
-                      ),
+                      Text('О приложении',
+                          style: GoogleFonts.didactGothic(
+                            fontSize: 23,
+                            color: Theme.of(context).accentColor,)),
                     ],
                   ),
                   onTap: () {
@@ -180,425 +167,431 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        body: ExpandableBottomSheet(
-          background: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(data.theme()),
-                  fit: BoxFit.fill,
+        body: Builder(
+          builder: (context) => ExpandableBottomSheet(
+            background: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(data.image()),
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-              child: Column(children: [
-                const Padding(padding: EdgeInsets.only(top: 40)),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      NeumorphicButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        padding: EdgeInsets.only(top: 0),
-                        child: Icon(Icons.menu,
-                            size: 45, color: Color(0xFFD0D0D0)),
-                        style: NeumorphicStyle(
-                          depth: 3,
-                          color: Colors.transparent,
-                          lightSource: LightSource.bottom,
-                          boxShape: NeumorphicBoxShape.circle(),
-                        ),
-                      ),
-                      Text(data.prefs.getString('city')!.split(";")[0],
-                          style: GoogleFonts.manrope(
-                              fontSize: 16,
-                              color: Color(0xFFD0D0D0),
-                              fontWeight: FontWeight.w600)),
-                      NeumorphicButton(
-                        onPressed: () async {
-                          await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => SearchPage(title: 'Search')));
-                          setState(() {});
-                        },
-                        padding: EdgeInsets.only(top: 0),
-                        child: NeumorphicIcon(
-                          Icons.add_circle_outline,
-                          size: 45,
-                          style: NeumorphicStyle(
-                            depth: 10,
-                            color: Color(0xFFD0D0D0),
+                child: Column(children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 40, left: 10, right: 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          NeumorphicButton(
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            padding: EdgeInsets.only(top: 0),
+                            child: Icon(Icons.menu,
+                                size: 45, color: Color(0xFFD0D0D0)),
+                            style: NeumorphicStyle(
+                              depth: 3,
+                              color: Colors.transparent,
+                              shadowLightColor: Colors.black,
+                              lightSource: LightSource.bottom,
+                              boxShape: NeumorphicBoxShape.circle(),
+                            ),
                           ),
-                        ),
-                        style: NeumorphicStyle(
-                          depth: 3,
-                          color: Colors.transparent,
-                          lightSource: LightSource.bottom,
-                          boxShape: NeumorphicBoxShape.circle(),
-                        ),
-                      ),
-                    ]),
-                Text(data.temp("current", 0),
+                          Text(data.prefs.getString('city')!.split(";")[0],
+                              style: GoogleFonts.manrope(
+                                  fontSize: 16,
+                                  color: Color(0xFFD0D0D0),
+                                  fontWeight: FontWeight.w600)),
+                          NeumorphicButton(
+                            onPressed: () async {
+                              await Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => SearchPage(title: 'Search')));
+                              data.cities.clear();
+                              setState(() {});
+                            },
+                            padding: EdgeInsets.only(top: 0),
+                            child: NeumorphicIcon(
+                              Icons.add_circle_outline,
+                              size: 45,
+                              style: NeumorphicStyle(
+                                shadowLightColor: Colors.black,
+                                depth: 10,
+                                color: Color(0xFFD0D0D0),
+                              ),
+                            ),
+                            style: NeumorphicStyle(
+                              shadowLightColor: Colors.black,
+                              depth: 4,
+                              color: Colors.transparent,
+                              lightSource: LightSource.bottom,
+                              boxShape: NeumorphicBoxShape.circle(),
+                            ),
+                          ),
+                        ]),
+                  ),
+                  Text(data.temp("current", 0),
+                      style: GoogleFonts.manrope(
+                          fontSize: 80,
+                          color: Color(0xFFD0D0D0),
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -5)),
+                  Text(
+                    data.date(),
                     style: GoogleFonts.manrope(
-                        fontSize: 80,
-                        color: Color(0xFFD0D0D0),
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -5)),
-                Text(
-                  data.date(),
-                  style: GoogleFonts.manrope(
-                    fontSize: 20,
-                    color: Color(0xFFD0D0D0),
-                    fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                      color: Color(0xFFD0D0D0),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
+                ])),
+            persistentHeader: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30)),
+              ),
+              padding: EdgeInsets.only(left: 0, right: 0),
+              height: 30,
+              child: Center(
+                child: Container(
+                  height: 5,
+                  width: 100,
+                  decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
                 ),
-              ])),
-          persistentHeader: Container(
-            padding: EdgeInsets.only(left: 0, right: 0),
-            height: 40,
-            color: data.prefs.getBool("theme")!
-                ? Color(0xFF0C162B)
-                : Color(0xFFE2EBFF),
-            child: Center(
-              child: Container(
-                height: 6,
-                width: 100,
-                decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
               ),
             ),
-          ),
-          persistentContentHeight: 150,
-          expandableContent: Container(
-            color: Theme.of(context).canvasColor,
-            height: 380,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          color: Theme.of(context).canvasColor,
-                          depth: 3,
-                          lightSource: LightSource.top,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20,
-                            horizontal: 6,
+            persistentContentHeight: 150,
+            expandableContent: Container(
+              color: Theme.of(context).canvasColor,
+              height: 380,
+              child: Column(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 20, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Neumorphic(
+                          style: NeumorphicStyle(
+                            color: Theme.of(context).cardColor,
+                            depth: 4,
+                            shadowLightColor: Colors.black,
+                            lightSource: LightSource.bottom,
                           ),
-                          child: Column(
-                            children: [
-                              Text(
-                                data.time(1),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                child: weather(),
-                              ),
-                              Text(
-                                data.temp("hourly", 1),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          color: Theme.of(context).canvasColor,
-                          depth: 3,
-                          lightSource: LightSource.top,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20,
-                            horizontal: 6,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                data.time(2),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                child: weather(),
-                              ),
-                              Text(
-                                data.temp("hourly", 2),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 6,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  data.time(1),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  child: weather(),
+                                ),
+                                Text(
+                                  data.temp("hourly", 1),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          color: Theme.of(context).canvasColor,
-                          depth: 3,
-                          lightSource: LightSource.top,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20,
-                            horizontal: 6,
+                        Neumorphic(
+                          style: NeumorphicStyle(
+                            color: Theme.of(context).cardColor,
+                            depth: 4,
+                            shadowLightColor: Colors.black,
+                            lightSource: LightSource.bottom,
                           ),
-                          child: Column(
-                            children: [
-                              Text(
-                                data.time(3),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                child: weather(),
-                              ),
-                              Text(
-                                data.temp("hourly", 3),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Neumorphic(
-                        style: NeumorphicStyle(
-                          color: Theme.of(context).canvasColor,
-                          depth: 3,
-                          lightSource: LightSource.top,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 20,
-                            horizontal: 6,
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                data.time(4),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Container(
-                                height: 40,
-                                width: 40,
-                                child: weather(),
-                              ),
-                              Text(
-                                data.temp("hourly", 4),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: Theme.of(context).accentColor,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 6,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  data.time(2),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  child: weather(),
+                                ),
+                                Text(
+                                  data.temp("hourly", 2),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Neumorphic(
+                          style: NeumorphicStyle(
+                            color: Theme.of(context).cardColor,
+                            depth: 4,
+                            shadowLightColor: Colors.black,
+                            lightSource: LightSource.bottom,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 6,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  data.time(3),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  child: weather(),
+                                ),
+                                Text(
+                                  data.temp("hourly", 3),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Neumorphic(
+                          style: NeumorphicStyle(
+                            color: Theme.of(context).cardColor,
+                            depth: 4,
+                            shadowLightColor: Colors.black,
+                            lightSource: LightSource.bottom,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 6,
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  data.time(4),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  child: weather(),
+                                ),
+                                Text(
+                                  data.temp("hourly", 4),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 165,
-                        height: 90,
-                        child: Neumorphic(
-                          style: NeumorphicStyle(
-                            color: data.prefs.getBool("theme")!
-                                ? Color(0xFF0D182C)
-                                : Color(0xFFE2EBFF),
-                            depth: 10,
-                            lightSource: LightSource.top,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                WeatherIcons.thermometer,
-                                size: 26,
-                                color: data.prefs.getBool("theme")!
-                                    ? Color(0xFFB1B1B1)
-                                    : Colors.black,
-                              ),
-                              Text(
-                                data.temp("current", 0),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: data.prefs.getBool("theme")!
-                                        ? Color(0xFFD0D0D0)
-                                        : Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 20, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 165,
+                          height: 90,
+                          child: Neumorphic(
+                            style: NeumorphicStyle(
+                              color: Theme.of(context).cardColor,
+                              depth: 5,
+                              shadowLightColor: Colors.black,
+                              lightSource: LightSource.bottom,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  WeatherIcons.thermometer,
+                                  size: 26,
+                                  color: data.prefs.getBool("theme")!
+                                      ? Color(0xFFB1B1B1)
+                                      : Colors.black,
+                                ),
+                                Text(
+                                  data.temp("current", 0),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 165,
-                        height: 90,
-                        child: Neumorphic(
-                          style: NeumorphicStyle(
-                            color: data.prefs.getBool("theme")!
-                                ? Color(0xFF0D182C)
-                                : Color(0xFFE2EBFF),
-                            depth: 10,
-                            lightSource: LightSource.top,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                WeatherIcons.humidity,
-                                size: 26,
-                                color: data.prefs.getBool("theme")!
-                                    ? Color(0xFFB1B1B1)
-                                    : Colors.black,
-                              ),
-                              Text(
-                                data.prefs.getStringList("current")![2] + '%',
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: data.prefs.getBool("theme")!
-                                        ? Color(0xFFD0D0D0)
-                                        : Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                        Container(
+                          width: 165,
+                          height: 90,
+                          child: Neumorphic(
+                            style: NeumorphicStyle(
+                              color: Theme.of(context).cardColor,
+                              depth: 5,
+                              shadowLightColor: Colors.black,
+                              lightSource: LightSource.bottom,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  WeatherIcons.humidity,
+                                  size: 26,
+                                  color: data.prefs.getBool("theme")!
+                                      ? Color(0xFFB1B1B1)
+                                      : Colors.black,
+                                ),
+                                Text(
+                                  data.prefs.getStringList("current")![2] + '%',
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 165,
-                        height: 90,
-                        child: Neumorphic(
-                          style: NeumorphicStyle(
-                            color: data.prefs.getBool("theme")!
-                                ? Color(0xFF0D182C)
-                                : Color(0xFFE2EBFF),
-                            depth: 10,
-                            lightSource: LightSource.top,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                WeatherIcons.strong_wind,
-                                size: 26,
-                                color: data.prefs.getBool("theme")!
-                                    ? Color(0xFFB1B1B1)
-                                    : Colors.black,
-                              ),
-                              Text(
-                                data.wind("current", 3),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: data.prefs.getBool("theme")!
-                                        ? Color(0xFFD0D0D0)
-                                        : Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, left: 20, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 165,
+                          height: 90,
+                          child: Neumorphic(
+                            style: NeumorphicStyle(
+                              color: Theme.of(context).cardColor,
+                              depth: 5,
+                              shadowLightColor: Colors.black,
+                              lightSource: LightSource.bottom,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  WeatherIcons.strong_wind,
+                                  size: 26,
+                                  color: data.prefs.getBool("theme")!
+                                      ? Color(0xFFB1B1B1)
+                                      : Colors.black,
+                                ),
+                                Text(
+                                  data.wind("current", 3),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 165,
-                        height: 90,
-                        child: Neumorphic(
-                          style: NeumorphicStyle(
-                            color: data.prefs.getBool("theme")!
-                                ? Color(0xFF0D182C)
-                                : Color(0xFFE2EBFF),
-                            depth: 10,
-                            lightSource: LightSource.top,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                WeatherIcons.barometer,
-                                size: 26,
-                                color: data.prefs.getBool("theme")!
-                                    ? Color(0xFFB1B1B1)
-                                    : Colors.black,
-                              ),
-                              Text(
-                                data.press("current", 1),
-                                style: GoogleFonts.manrope(
-                                    fontSize: 17,
-                                    color: data.prefs.getBool("theme")!
-                                        ? Color(0xFFD0D0D0)
-                                        : Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                        Container(
+                          width: 165,
+                          height: 90,
+                          child: Neumorphic(
+                            style: NeumorphicStyle(
+                              color: Theme.of(context).cardColor,
+                              depth: 5,
+                              shadowLightColor: Colors.black,
+                              lightSource: LightSource.bottom,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  WeatherIcons.barometer,
+                                  size: 26,
+                                  color: data.prefs.getBool("theme")!
+                                      ? Color(0xFFB1B1B1)
+                                      : Colors.black,
+                                ),
+                                Text(
+                                  data.press("current", 1),
+                                  style: GoogleFonts.manrope(
+                                      fontSize: 17,
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          persistentFooter: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  side: BorderSide(color: Color(0xFF038CFE), width: 1),
+            persistentFooter: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    side: BorderSide(color: Color(0xFF038CFE), width: 1),
+                  ),
+                  child: Text(
+                    "Прогноз на неделю",
+                    style: GoogleFonts.manrope(
+                        fontSize: 14,
+                        color: Color(0xFF038CFE),
+                        fontWeight: FontWeight.w500),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => ForecastPage()));
+                  },
                 ),
-                child: Text(
-                  "Прогноз на неделю",
-                  style: GoogleFonts.manrope(
-                      fontSize: 14,
-                      color: Color(0xFF038CFE),
-                      fontWeight: FontWeight.w500),
-                ),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => ForecastPage()));
-                },
               ),
             ),
           ),

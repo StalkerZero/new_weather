@@ -49,7 +49,10 @@ class _ForecastPage extends State<ForecastPage> {
                             return Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(colors: [
+                                gradient: data.prefs.getBool('theme')!? LinearGradient(colors: [
+                                  Color(0xFF223b70),
+                                  Color(0xFF102042),
+                                ]) : LinearGradient(colors: [
                                   Color(0xFFCDDAF5),
                                   Color(0xFF9CBCFF),
                                 ]),
@@ -63,13 +66,17 @@ class _ForecastPage extends State<ForecastPage> {
                                         (23+index).toString()+" сентября", //TODO: Сделать реальную дату
                                         style: GoogleFonts.manrope(
                                             fontSize: 24,
+                                            color: Theme.of(context).accentColor,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                     ListTile(
                                       contentPadding:
                                           EdgeInsets.only(left: 10, top: 0, bottom: 20),
-                                      leading: Icon(WeatherIcons.rain, size: 60)
+                                      leading: Icon(
+                                          WeatherIcons.rain,
+                                          color: Theme.of(context).accentColor,
+                                          size: 60)
                                     ),
                                     ListTile(
                                       leading: Icon(WeatherIcons.thermometer, size: 26,),
@@ -78,42 +85,55 @@ class _ForecastPage extends State<ForecastPage> {
                                           data.temp("daily", index),
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
+                                              color: Theme.of(context).accentColor,
                                               fontWeight: FontWeight.w600),
                                         ),
                                         alignment: Alignment(-1.2, 0),
                                       ),
                                     ),
                                     ListTile(
-                                      leading: Icon(WeatherIcons.strong_wind, size: 26,),
+                                      leading: Icon(
+                                        WeatherIcons.strong_wind,
+                                        color: Theme.of(context).accentColor,
+                                        size: 26,),
                                       title: Align(
                                         child: Text(
                                           data.wind("daily", index),
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
+                                              color: Theme.of(context).accentColor,
                                               fontWeight: FontWeight.w600),
                                         ),
                                         alignment: Alignment(-1.22, 0),
                                       ),
                                     ),
                                     ListTile(
-                                      leading:Icon(WeatherIcons.humidity, size: 26,),
+                                      leading:Icon(
+                                        WeatherIcons.humidity,
+                                        color: Theme.of(context).accentColor,
+                                        size: 26,),
                                       title: Align(
                                         child: Text(
                                           data.prefs.getStringList("daily")![index].split(';')[2]+'%',
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
+                                              color: Theme.of(context).accentColor,
                                               fontWeight: FontWeight.w600),
                                         ),
                                         alignment: Alignment(-1.2, 0),
                                       ),
                                     ),
                                     ListTile(
-                                      leading: Icon(WeatherIcons.barometer, size: 26,),
+                                      leading: Icon(
+                                        WeatherIcons.barometer,
+                                        color: Theme.of(context).accentColor,
+                                        size: 26,),
                                       title: Align(
                                         child: Text(
                                           data.press("daily", index),
                                           style: GoogleFonts.manrope(
                                               fontSize: 16,
+                                              color: Theme.of(context).accentColor,
                                               fontWeight: FontWeight.w600),
                                         ),
                                         alignment: Alignment(-1.26, 0),
@@ -134,13 +154,13 @@ class _ForecastPage extends State<ForecastPage> {
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        side: BorderSide(color: Color(0xFF000000), width: 1),
+                        side: BorderSide(color: Theme.of(context).accentColor, width: 1),
                       ),
                       child: Text(
                         "Вернуться на главную",
                         style: GoogleFonts.manrope(
                             fontSize: 14,
-                            color: Color(0xFF000000),
+                            color: Theme.of(context).accentColor,
                             fontWeight: FontWeight.w500),
                       ),
                       onPressed: () {

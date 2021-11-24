@@ -37,6 +37,9 @@ dependencies:
   flutter_neumorphic_null_safety: ^3.2.4
   shared_preferences: ^2.0.8
   date_format: ^2.0.4
+  provider: ^6.0.1
+  get_storage:
+  get:
 
 dev_dependencies:
   flutter_test:
