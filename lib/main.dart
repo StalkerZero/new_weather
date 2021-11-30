@@ -51,14 +51,13 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-  static int weather = 2;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Icon weather() {
+  /*Icon weather() {
     switch (MyHomePage.weather) {
       case 1:
         return Icon(
@@ -91,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
         );
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -299,7 +298,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  child: weather(),
+                                  decoration: BoxDecoration(image: DecorationImage(image: data.weather("hourly", 1),))
                                 ),
                                 Text(
                                   data.temp("hourly", 1),
@@ -336,7 +335,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  child: weather(),
+                                  decoration: BoxDecoration(image: DecorationImage(image: data.weather("hourly", 2),))
                                 ),
                                 Text(
                                   data.temp("hourly", 2),
@@ -373,7 +372,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  child: weather(),
+                                  decoration: BoxDecoration(image: DecorationImage(image: data.weather("hourly", 3),))
                                 ),
                                 Text(
                                   data.temp("hourly", 3),
@@ -410,7 +409,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Container(
                                   height: 40,
                                   width: 40,
-                                  child: weather(),
+                                  decoration: BoxDecoration(image: DecorationImage(image: data.weather("hourly", 4),))
                                 ),
                                 Text(
                                   data.temp("hourly", 4),

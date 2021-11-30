@@ -42,6 +42,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
               child: Visibility(
                 visible: data.prefs.getStringList('favorites')!=null,
                 child: ListView(
+                  padding: EdgeInsets.only(left: 20),
                   // itemExtent: 5,
                   children: data.prefs.getStringList('favorites')!.map((e) => TextButton(
                       onPressed: ()async{
@@ -49,11 +50,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         await data.oneCall();
                         Navigator.pop(context);
                       },
-                      style: ButtonStyle(),
-                      child:
-                      Text(
-                          e.split(";")[0],
-                          style: GoogleFonts.manrope(fontSize: 16, color: Theme.of(context).accentColor,)
+                      style: ButtonStyle(alignment: Alignment.centerLeft),
+                      child: Text(
+                          e,
+                          style: GoogleFonts.manrope(
+                              fontSize: 16,
+                              color: Theme.of(context).accentColor
+                          )
                       )
                   )).toList(),
                 ),

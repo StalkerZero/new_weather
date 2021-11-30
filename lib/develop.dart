@@ -102,7 +102,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
                                     ),
                                     SizedBox(height: 4),
                                     Text(
-                                      'от 30 сентября 2021',
+                                      'от 30 ноября 2021',
                                       style: GoogleFonts.manrope(
                                           color: Theme.of(context).accentColor,
                                           fontSize: 10,

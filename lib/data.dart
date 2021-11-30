@@ -52,7 +52,10 @@ class data{
 
     list.clear();
     list.add(formatDate(DateTime.now(), [HH])+":00:00");
-    for(int i=0; i<19; i+=6) list.add(resp['hourly'][i]['temp'].toString());
+    for(int i=0; i<19; i+=6) list.add(
+        resp['hourly'][i]['temp'].toString()+";"+
+        resp['hourly'][i]['weather'][0]['icon'].toString()
+    );
     await prefs.setStringList('hourly', list);
 
     list.clear();
@@ -61,7 +64,8 @@ class data{
                 resp['daily'][i]['temp']["day"].toString()+";"+
                 resp['daily'][i]['pressure'].toString()+";"+
                 resp['daily'][i]['humidity'].toString()+";"+
-                resp['daily'][i]['wind_speed'].toString()
+                resp['daily'][i]['wind_speed'].toString()+";"+
+                resp['daily'][i]['weather'][0]['icon'].toString()
         );
       }
     await prefs.setStringList('daily', list);
@@ -75,6 +79,7 @@ class data{
     num--;
     var time = prefs.getStringList("hourly")![0].split(":");
     int buff = int.parse(time[0])+num*6;
+
     if(buff>=24) buff-=24;
     time[0]=buff.toString();
     time.removeAt(2);
@@ -83,7 +88,8 @@ class data{
 
   static String temp(String str, int num){
     var temp;
-    if(str=="daily")temp = prefs.getStringList(str)![num].split(';')[0];
+
+    if(str!="current")temp = prefs.getStringList(str)![num].split(';')[0];
     else temp = prefs.getStringList(str)![num];
 
     if(data.prefs.getInt("temp") !=1 )return double.parse(temp).toInt().toString()+"°C";
@@ -92,6 +98,7 @@ class data{
 
   static String press(String str, int num){
     var press;
+
     if(str=="daily") press = prefs.getStringList(str)![num].split(';')[1];
     else press = prefs.getStringList(str)![num];
 
@@ -101,11 +108,21 @@ class data{
 
   static String wind(String str, int num){
     var speed;
+
     if(str=="daily") speed = prefs.getStringList(str)![num].split(';')[3];
     else speed = prefs.getStringList(str)![num];
 
     if(data.prefs.getInt("wind") !=1 )return '  '+speed+'м/с';
     return '  '+(double.parse(speed)*3.6).toStringAsFixed(2)+'км/ч';
+  }
+
+  static AssetImage weather(String str, int num){
+    var icon;
+
+    if(str=="daily") icon = prefs.getStringList(str)![num].split(';')[4];
+    else icon = prefs.getStringList(str)![num].split(';')[1];
+
+    return AssetImage("assets/icons/"+icon+".png");
   }
 
   static String image(){

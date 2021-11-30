@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,26 +61,31 @@ class _ForecastPage extends State<ForecastPage> {
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ListTile(
                                       title: Text(
-                                        (23+index).toString()+" сентября", //TODO: Сделать реальную дату
+                                        formatDate(DateTime(2000, DateTime.now().month, DateTime.now().day+index), [dd," ",M]),
                                         style: GoogleFonts.manrope(
                                             fontSize: 24,
                                             color: Theme.of(context).accentColor,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
-                                    ListTile(
-                                      contentPadding:
-                                          EdgeInsets.only(left: 10, top: 0, bottom: 20),
-                                      leading: Icon(
-                                          WeatherIcons.rain,
-                                          color: Theme.of(context).accentColor,
-                                          size: 60)
+                                    Container(
+                                        width: 80,
+                                        height: 80,
+                                        alignment: Alignment.centerLeft,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              alignment: Alignment.centerLeft,
+                                              image: data.weather("daily", index),))
                                     ),
                                     ListTile(
-                                      leading: Icon(WeatherIcons.thermometer, size: 26,),
+                                      leading: Icon(WeatherIcons.thermometer,
+                                        color: Theme.of(context).accentColor,
+                                        size: 26,),
                                       title: Align(
                                         child: Text(
                                           data.temp("daily", index),

@@ -73,7 +73,7 @@ class _FavoritesPageState extends State<SearchPage> {
               child: Visibility(
                 visible: data.cities.length > 0,
                 child: ListView(
-                  padding: EdgeInsets.only(bottom: 15),
+                  padding: EdgeInsets.only(left: 20),
                   // itemExtent: 5,
                   children: data.cities
                       .map((e) => TextButton(
@@ -82,10 +82,13 @@ class _FavoritesPageState extends State<SearchPage> {
                             await data.oneCall();
                             Navigator.pop(context);
                           },
-                          style: ButtonStyle(),
+                          style: ButtonStyle(alignment: Alignment.centerLeft),
                           child: Text(
                               e,
-                              style: GoogleFonts.manrope(fontSize: 16)
+                              style: GoogleFonts.manrope(
+                                  fontSize: 16,
+                                  color: Theme.of(context).accentColor
+                              )
                           )
                       )).toList(),
                 ),

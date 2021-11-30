@@ -61,6 +61,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             style: GoogleFonts.manrope(
                                 fontSize: 20, fontWeight: FontWeight.w600)),
                         NeumorphicSwitch(
+                          style: NeumorphicSwitchStyle(
+                            thumbDepth: 5,
+                            trackDepth: -5,
+                          ),
                           onChanged: (val) async {
                             await data.prefs.setBool("theme", val);
                             Get.changeThemeMode(data.prefs.getBool('theme')!
