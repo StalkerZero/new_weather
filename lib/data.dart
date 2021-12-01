@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_format/date_format.dart';
+import 'package:intl/intl.dart';
 
 class data{
   static Set<String> cities = new Set();
@@ -13,7 +15,7 @@ class data{
   static start() async {
     prefs = await SharedPreferences.getInstance();
 
-    if(prefs.getString('city')==null)prefs.setString('city', "Санкт Петербург,RU;60.0;30.0");
+    if(prefs.getString('city')==null)prefs.setString('city', "Санкт Петербург,RU;59.8944;30.2642");
     if(prefs.getStringList('favorites')==null) prefs.setStringList('favorites', ["Санкт Петербург,RU;60.0;30.0"]);
     if(prefs.getInt("temp")==null)prefs.setInt('temp', 0);
     if(prefs.getInt("wind")==null)prefs.setInt('wind', 0);
@@ -71,9 +73,7 @@ class data{
     await prefs.setStringList('daily', list);
   }
 
-  static String date(){
-    return formatDate(DateTime.now(), [dd, ' ', M, ' ', yyyy]);
-  }
+  static String date() => DateFormat.d().add_MMM().add_y().format(DateTime.now());
 
   static time(int num){
     num--;

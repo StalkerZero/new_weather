@@ -15,9 +15,7 @@ import 'forecast.dart';
 import 'settings.dart';
 import 'search.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => /*initializeDateFormatting('ru', '').then((_) => */runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -57,40 +55,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  /*Icon weather() {
-    switch (MyHomePage.weather) {
-      case 1:
-        return Icon(
-          WeatherIcons.day_sunny,
-          color:
-              data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
-        );
-      case 2:
-        return Icon(
-          WeatherIcons.rain,
-          color:
-              data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
-        );
-      case 3:
-        return Icon(
-          WeatherIcons.cloud,
-          color:
-              data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
-        );
-      case 4:
-        return Icon(
-          WeatherIcons.day_snow,
-          color:
-              data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
-        );
-      default:
-        return Icon(
-          WeatherIcons.alien,
-          color:
-              data.prefs.getBool("theme")! ? Color(0xFFB1B1B1) : Colors.black,
-        );
-    }
-  }*/
+  bool _extend = true;
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -262,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            persistentContentHeight: 150,
+            persistentContentHeight: 156,
             expandableContent: Container(
               color: Theme.of(context).canvasColor,
               height: 380,
@@ -570,9 +536,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            persistentFooter: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4),
+            onIsExtendedCallback: (){
+              _extend = false;
+              setState(() {});
+            },
+            onIsContractedCallback: (){
+              _extend = true;
+              setState(() {});
+            },
+            enableToggle: true,
+            persistentFooter: Container(
+              height: 40,
+              padding: EdgeInsets.symmetric(vertical: 0),
+              child: Visibility(
+                visible: _extend,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(

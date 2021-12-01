@@ -17,13 +17,13 @@ class SearchPage extends StatefulWidget {
 
 search(String text) async {
   final resp = await http.get(Uri.parse(
-      'http://api.geonames.org/searchJSON?name_startsWith=$text&maxRows=10&orderby=relevance&username=stalkernidus'));
+      'http://api.geonames.org/searchJSON?name_startsWith=$text&maxRows=20&orderby=relevance&username=stalkernidus'));
   // log(resp.body.toString());
   final respFromJson = jsonDecode(resp.body)['geonames'];
   // log(respFromJson.toString());
   // await data.start();
   data.cities.clear();
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < respFromJson.length; i++)
     data.cities.add(respFromJson[i]['name'].toString() +
         "," +
         respFromJson[i]['countryCode'].toString());

@@ -12,6 +12,8 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
+  String _text = "";
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: SafeArea(
@@ -45,14 +47,21 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   padding: EdgeInsets.only(left: 20),
                   // itemExtent: 5,
                   children: data.prefs.getStringList('favorites')!.map((e) => TextButton(
+                      style: ButtonStyle(alignment: Alignment.centerLeft),
                       onPressed: ()async{
                         data.prefs.setString('city', e);
                         await data.oneCall();
+                        print(e);
                         Navigator.pop(context);
                       },
-                      style: ButtonStyle(alignment: Alignment.centerLeft),
+                      onLongPress: () async {
+                        var list = data.prefs.getStringList('favorites')!;
+                        list.remove(e);
+                        await data.prefs.setStringList('favorites', list);
+                        setState(() {});
+                      },
                       child: Text(
-                          e,
+                          e.split(';')[0],
                           style: GoogleFonts.manrope(
                               fontSize: 16,
                               color: Theme.of(context).accentColor
