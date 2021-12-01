@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'data.dart';
 
@@ -65,7 +66,7 @@ class _ForecastPage extends State<ForecastPage> {
                                   children: [
                                     ListTile(
                                       title: Text(
-                                        formatDate(DateTime(2000, DateTime.now().month, DateTime.now().day+index), [dd," ",M]),
+                                        DateFormat.MMMd("ru").format((DateTime(2000, DateTime.now().month, DateTime.now().day+index))),
                                         style: GoogleFonts.manrope(
                                             fontSize: 24,
                                             color: Theme.of(context).accentColor,

@@ -7,6 +7,7 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'data.dart';
 import 'develop.dart';
@@ -15,7 +16,7 @@ import 'forecast.dart';
 import 'settings.dart';
 import 'search.dart';
 
-void main() => /*initializeDateFormatting('ru', '').then((_) => */runApp(const MyApp());
+void main() => initializeDateFormatting('ru', '').then((_) => runApp(const MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -200,12 +201,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color(0xFFD0D0D0),
                           fontWeight: FontWeight.w600,
                           letterSpacing: -5)),
-                  Text(
-                    data.date(),
-                    style: GoogleFonts.manrope(
-                      fontSize: 20,
-                      color: Color(0xFFD0D0D0),
-                      fontWeight: FontWeight.w600,
+                  Visibility(
+                    visible: _extend,
+                    child: AnimatedContainer(
+                        height: 30,
+                        alignment: Alignment.bottomCenter,
+                        duration: Duration(milliseconds: 250),
+                        child: Text(
+                          data.date(DateTime.now()),
+                          style: GoogleFonts.manrope(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,),
+                        )
                     ),
                   ),
                 ])),
@@ -231,18 +239,23 @@ class _MyHomePageState extends State<MyHomePage> {
             persistentContentHeight: 156,
             expandableContent: Container(
               color: Theme.of(context).canvasColor,
-              height: 380,
+              height: 450,
               child: Column(
                 children: [
                   Visibility(
-                    visible: !_extend,
-                      child: Text(
-                        data.date(),
-                        style: GoogleFonts.manrope(
-                          fontSize: 20,
-                          color: Color(0xFFD0D0D0),
-                          fontWeight: FontWeight.w600,),
-                      )
+                      visible: !_extend,
+                      child: AnimatedContainer(
+                          height: 30,
+                          alignment: Alignment.bottomCenter,
+                          duration: Duration(milliseconds: 250),
+                          child: Text(
+                            data.date(DateTime.now()),
+                            style: GoogleFonts.manrope(
+                              fontSize: 20,
+                              color: Theme.of(context).accentColor,
+                              fontWeight: FontWeight.w600,),
+                          )
+                      ),
                   ),
                   Padding(
                     padding:

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:date_format/date_format.dart';
@@ -73,7 +72,7 @@ class data{
     await prefs.setStringList('daily', list);
   }
 
-  static String date() => DateFormat.d().add_MMM().add_y().format(DateTime.now());
+  static String date(DateTime date) => DateFormat.yMMMd("ru").format(date);
 
   static time(int num){
     num--;
