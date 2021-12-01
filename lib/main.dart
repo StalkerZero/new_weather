@@ -234,6 +234,16 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 380,
               child: Column(
                 children: [
+                  Visibility(
+                    visible: !_extend,
+                      child: Text(
+                        data.date(),
+                        style: GoogleFonts.manrope(
+                          fontSize: 20,
+                          color: Color(0xFFD0D0D0),
+                          fontWeight: FontWeight.w600,),
+                      )
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 16, left: 20, right: 20),
