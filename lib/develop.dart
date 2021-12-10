@@ -86,7 +86,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
                                 Column(
                                   children: [
                                     Text(
-                                      'by ITMO University',
+                                      'by ITMO FSPO',
                                       style: GoogleFonts.manrope(
                                           color: Theme.of(context).accentColor,
                                           fontSize: 15,
@@ -94,7 +94,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
                                     ),
                                     SizedBox(height: 8),
                                     Text(
-                                      'Версия 1.0',
+                                      'Версия 1.1',
                                       style: GoogleFonts.manrope(
                                           color: Theme.of(context).accentColor,
                                           fontSize: 10,
@@ -102,7 +102,7 @@ class _DeveloperPageState extends State<DeveloperPage> {
                                     ),
                                     SizedBox(height: 4),
                                     Text(
-                                      'от 30 ноября 2021',
+                                      'от 1 декабря 2021',
                                       style: GoogleFonts.manrope(
                                           color: Theme.of(context).accentColor,
                                           fontSize: 10,
